@@ -20,10 +20,10 @@ class SpiderMenUtil
 		static string 			replaceCRLF(const string& input);
 		static int				atoi(const char* str);
 	private:
-		// SpiderMenUtil();
-		// SpiderMenUtil(SpiderMenUtil& src);
-		// SpiderMenUtil& operator = (SpiderMenUtil& src);
-		// ~SpiderMenUtil();
+		SpiderMenUtil();
+		SpiderMenUtil(SpiderMenUtil& src);
+		SpiderMenUtil& operator = (SpiderMenUtil& src);
+		~SpiderMenUtil();
 };
 
 #endif // SPIDERMENUTIL_HPP

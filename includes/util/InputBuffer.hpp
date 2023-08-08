@@ -12,11 +12,11 @@ class InputBuffer : public string
         InputBuffer();
         ~InputBuffer();
 
-        void            reset(); // 초기화
-        void            reset(size_t index); // index부터 문자열 남기고 초기화
-        char*           getCharPointer(); // c_str() + mIndex (c_str() 역할)
-        void            updateIndex(); // mIndex = size() (claer() 역할)
-        void            updateIndex(size_t mIndex); // this->mIndex = mIndex
+        void            reset();
+        void            reset(size_t index);
+        char*           getCharPointer();
+        void            updateIndex();
+        void            updateIndex(size_t mIndex);
 
         size_t          getIndex();
 

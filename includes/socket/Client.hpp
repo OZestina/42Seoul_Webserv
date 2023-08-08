@@ -24,53 +24,30 @@
 #include "../util/Time.hpp"
 #include "../util/InputBuffer.hpp"
 
-//REQUEST STRUCT
-	// method
-	// root
-	// http
-	// Connection
-	// Accept
-	// host
-	// Content-Length
-	// transfer-coding
-	//Content-Type
-		//boundary
-		//Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryf4QX1ApB5cA72Bt7
-
 class Client : public Socket
 {
 	public:
 		Client(bool mType, int mFd, int mPort, vector<Server>* mServer, KQueue& mKq);
 		virtual ~Client();
 
-		//handler
 		void				handleClientRead(struct kevent* event);
 		void				handleClientWrite(struct kevent* event);
 		void				handleProcess(struct kevent* event);
 
-		//read
 		void				readSocket(struct kevent* event);
 		int					addBuffer();
 		void				addRequests(ARequest* request);
 		ARequest*			createRequest(Head& head);
 		map<string,string>	createHttpKeyVal(const vector<string>&	header_line);
 
-		//operate
 		void				operateRequest(ARequest* request);
 
-
-		//write
 		void				writeSocket(struct kevent* event);
 		int					sendResponseMSG(struct kevent* event);
 
-		//read-pipe
 		void				readPipe(struct kevent* event);
 
-		//reset client
 		void				clearClient();
-
-//to amend
-		// int					checkRequest(const string& headline);
 
 		//getter && setter
 		int					getReadStatus() const;
@@ -88,9 +65,8 @@ class Client : public Socket
 		void				setRequestStatus(int mRequestStatus);
 
 	private:
-		// void			parseHeader(void);
 		queue<ARequest*>	mRequests;
-		int					mReadStatus;	//eClient
+		int					mReadStatus;
 		int					mRequestStatus;
 		int					mResponseCode;
 		InputBuffer			mInputBuffer;

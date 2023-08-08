@@ -26,18 +26,13 @@ ARequest::ARequest(string root, int mType, map<string, string> header_key_val, v
 		default: break;
 	}
 
-	//method 필수요소 확인: host, user_agent
 	if (mBasics.host.size() == 0 || mBasics.user_agent.size() == 0)
 		throw 400;
-	//method 필수요소 확인: connection
+
 	if (header_key_val["Connection"] == "close")
 		mBasics.connection = "close";
 	else
 		mBasics.connection = KEEP_ALIVE;
-	//method 필수요소 확인: content_length 확인 (숫자인지 아닌지 여부)
-	// if (mBasics.content_length == 0 && header_key_val["Content-Length"].size()) {
-	// 	throw 400;
-	// }
 
 	//초기화
 	mRoot = root;
@@ -50,15 +45,13 @@ ARequest::ARequest(string root, int mType, map<string, string> header_key_val, v
 		findExtensionLocation(mServer);
 
 	//요청한 file/dir을 실제 location/server block root 주소에 따라 변경
-	if (mLocation.getRoot().size())//location 블럭에 루트가 있는 경우
+	if (mLocation.getRoot().size())
 		mRoot.replace(mRoot.find(mLocation.getKey()), mLocation.getKey().size(), mLocation.getRoot());
 	else
 		mRoot = mServer.getRoot() + "/" + mRoot;
 
 	//존재 확인
-	if (mType != POST && mType != PUT && !mLocation.getRedirect().size() && access(mRoot.c_str(), F_OK) < 0)
-	{
-		// cout << "404 not found? : "<< mRoot.c_str() << endl;
+	if (mType != POST && mType != PUT && !mLocation.getRedirect().size() && access(mRoot.c_str(), F_OK) < 0) {
 		throw 404;
 	}
 
@@ -120,17 +113,6 @@ Server	ARequest::findServer(vector<Server>* servers)
 	}
 	return (*servers)[0];
 }
-
-// void	ARequest::findLocation(Server& server)
-// {
-// 	// 왜 함수가 두개로 나누어져 있는지?
-
-// 	//Find Root Location으로 루트 설정
-// 	findRootLocation(server, mRoot);
-
-// 	//Find extension location으로 cgi path 업데이트 해주기 (있는 경우에만)
-// 	findExtensionLocation(server);// put은 제외
-// }
 
 void	ARequest::findRootLocation(Server& server, string root)
 {
@@ -214,14 +196,11 @@ void	ARequest::setCgiEnv()
 void	ARequest::cutQuery()
 {
 	size_t pos = mRoot.rfind("?");
-	if (pos == string::npos || mRoot.find("/", pos) != string::npos)
-	{
-		// cout << "false ? " << endl;
+	if (pos == string::npos || mRoot.find("/", pos) != string::npos) {
 		return;
 	}
 	mQuery = mRoot.substr(pos + 1);
 	mRoot = mRoot.substr(0, pos);
-	// cout << "mQuery : " << mQuery << "mRoot : " << mRoot << endl;
 }
 
 void	ARequest::setType(int type) { mType = type; }

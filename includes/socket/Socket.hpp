@@ -19,8 +19,6 @@ class Socket
 		int						getPortNumber() const;
 		vector<Server>*			getServer() const;
 
-		// void			setServer(const vector<Server>* server);
-
 	protected:
 		const bool				mType;
 		const int				mFd;

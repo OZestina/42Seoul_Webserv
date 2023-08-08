@@ -8,7 +8,6 @@
 #include <vector>
 #include <map>
 #include <cstring>
-// #include <stdexcept>
 #include <unistd.h>
 #include "Server.hpp"
 #include "../util/SpiderMenUtil.hpp"
@@ -24,7 +23,6 @@ class Config
 
 		void								parse(const string& file = DEFAULT_CONF_FILE);
 		const map< int, vector<Server> >&	getServer() const;
-		// void					printMembers() const;
 
 	private:
 		map< int, vector<Server> >	mServer;

@@ -18,13 +18,10 @@ RPost::RPost(string mRoot, map<string, string> header_key_val, vector<Server>* s
 		throw 400;
 	}
 
-	//method 사용가능한지 확인
 	if (find(mLocation.getLimitExcept().begin(), mLocation.getLimitExcept().end(), "POST") == mLocation.getLimitExcept().end())
 		throw 405;
 
-	//file only인 location에 dir 요청으로 들어온 경우
 	if (mLocation.getOnlyFile() && mIsFile ==  false) {
-		// cerr << "/* only file Error" << endl;
 		throw 400;
 	}
 }
@@ -41,12 +38,12 @@ pid_t	RPost::operate()
 	int	outFd[2];
 
 	if (pipe(outFd) == -1)
-		throw 500;// runtime_error("Error: pipe error");
+		throw 500;
 	if (pipe(inFd) == -1)
-		throw 500;// runtime_error("Error: pipe error");
+		throw 500;
 	pid_t pid = fork();
 	if (pid == -1)
-		throw 500;// runtime_error("Error: fork error");
+		throw 500;
 	else if (pid == 0) {
 		if (dup2(inFd[0], STDIN_FILENO) == -1) {
 			exit (EXIT_FAILURE);

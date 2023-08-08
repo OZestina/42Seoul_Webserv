@@ -24,8 +24,7 @@ RGet::~RGet() { }
 
 pid_t	RGet::operate()
 {
-	//dir일 경우, index page가 있으면 root에 붙여준다 && mIsFile = 1
-	//아니면 그대로 진행
+
 	if (mIsFile ==  false) {
 		if (mLocation.getIndex().size()) {
 			mRoot += "/" + mLocation.getIndex();
@@ -41,7 +40,6 @@ pid_t	RGet::operate()
 			setPipe(outFd);	//pipe 생성 (ARequest에 있음)
 			pid_t pid = fork();
 
-			//cgi 실행 파일, 전달할 .py/php 파일 이름, NULL
 			if (pid == 0) {
 				if (dup2(outFd[1], STDOUT_FILENO) == -1) {
 					exit(EXIT_FAILURE);
@@ -119,7 +117,6 @@ const string	RGet::createCgiResponse()
 		mMSG.append(mPipeValue);
 	} else {
 		mMSG.append("0\r\n\r\n");
-		// cout << "mPipeValue cannot found CRLF" << endl;
 	}
 
 	return mMSG;
@@ -135,13 +132,13 @@ const string	RGet::createLegacyResponse()
 	string		body;
 
 	//1st line: STATUS
-	mMSG.append(STATUS_200);	//"HTTP/1.1 200 OK\r\n"
+	mMSG.append(STATUS_200);
 
 	//HEADER============================================
 	Time::stamp(timeStamp);
-	mMSG.append(timeStamp);		//Date: Tue, 20 Jul 2023 12:34:56 GMT\r\n
-	mMSG.append(SPIDER_SERVER);	//Server: SpiderMen/1.0.0\r\n
-
+	mMSG.append(timeStamp);
+	mMSG.append(SPIDER_SERVER);
+	
 	if (mLocation.getRedirect().size())
 		return createRedirectResponse();
 	if (mIsFile == true) {
@@ -166,10 +163,8 @@ const string	RGet::createLegacyResponse()
 		}
 
 		mMSG.append("Content-Length: ");
-		// cout << "body size = " << body.size() << endl;
 		to_str << body.size();
 		to_str >> buffer;
-		// cout << "body size  in buffer = " << buffer << endl;
 		mMSG.append(buffer);
 		mMSG.append("\r\n");
 
@@ -177,8 +172,6 @@ const string	RGet::createLegacyResponse()
 			mMSG.append("Connection: keep-alive\r\n");
 
 		mMSG.append("\r\n"); //end of head
-
-		//BODY 추가
 		mMSG.append(body.c_str(), body.size());
 
 	} else {//if dir
@@ -212,14 +205,7 @@ const string	RGet::createLegacyResponse()
 			
 			closedir(dir);
 
-		} else {// autoindex np => 뭘 보여주지
-			// mMSG.clear();
-			// mMSG.append(STATUS_404);
-			// mMSG.append(timeStamp);		//Date: Tue, 20 Jul 2023 12:34:56 GMT\r\n
-			// mMSG.append(SPIDER_SERVER);	//Server: SpiderMen/1.0.0\r\n
-			// mMSG.append("Content-Type: text/plain\r\n");
-
-			//원본
+		} else {
 			mMSG.append("Content-Length: 24\r\n\r\n");
 			mMSG.append("Auto-Index not available");
 		}

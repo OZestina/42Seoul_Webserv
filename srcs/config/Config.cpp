@@ -64,8 +64,7 @@ void	Config::parse(const string& file)
 			for ( ; j < jend; ++j) {
 				string key = (it->second[i]).getLocation()[j].getKey();
 				if (key.size() && key.at(key.size() - 1) == '/') {
-					//location root확인
-					//없으면 server root + key 값으로 확인
+					
 					string location = (it->second[i]).getLocation()[j].getRoot();
 					if (location.size() == 0)
 						location = (it->second[i]).getRoot() + key;

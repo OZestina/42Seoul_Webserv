@@ -24,11 +24,11 @@ int	main(int argc, char* argv[])
 			config.parse(argv[1]);
 		else
 			config.parse();
-		// Config.printMembers();
+
 		signal(SIGINT, sigHandler);
 		signal(SIGQUIT, sigHandler);
-		while (42) {
-			
+
+		while (42) {	
 			SpiderMen spiderMen(config);
 			
 			try {

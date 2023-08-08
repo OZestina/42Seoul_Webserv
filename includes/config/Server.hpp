@@ -34,8 +34,6 @@ class Server
 		void						setListen(const string& mListen);
 		void						setClientMaxBodySize(const string& mClientMaxBodySize);
 
-		// void						printMembers() const;
-
 	private:
 		vector<Location>	mLocation;
 		vector<string>		mServerName;
@@ -44,13 +42,5 @@ class Server
 		int					mListen;
 		int					mClientMaxBodySize;
 };
-
-// template<typename K, typename V>
-// void printMap(map<K, V> tmap)
-// {
-//     for (typename map<K, V>::iterator it = tmap.begin(); it != tmap.end(); it++) {
-//         cout << "{" << (*it).first << ": " << (*it).second << "}\n";
-//     }
-// }
 
 #endif // SERVER_HPP

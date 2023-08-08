@@ -101,7 +101,6 @@ void	KQueue::deleteProcessPid(int pid)
 	}
 	EV_SET(&event, pid, EVFILT_PROC, EV_DELETE, 0, 0, NULL);
 	if (kevent(mKq, &event, 1, NULL, 0, NULL) == -1) {
-		// cout << strerror(errno) << endl;
 		throw runtime_error("deleteProcessPid failed");
 	}
 }

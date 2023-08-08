@@ -55,16 +55,14 @@ int	Body::addChunkBody(InputBuffer& inputBuffer)
 {
 	string	input_tmp;
 
-	//body + header의 경우 error 던져짐
 	if (mChunkLen == 0)
 		mChunkLen = parseChunkLen(inputBuffer);
-	// cout << "mChunkLen: "<<mChunkLen <<", input size : " <<inputBuffer.size() - inputBuffer.getIndex() << endl;
 	while (mReadEnd == false && mChunkLen && inputBuffer.size() - inputBuffer.getIndex())
 	{
 		if (inputBuffer.size() - inputBuffer.getIndex() >= mChunkLen + 2) {
 			mBody.append(inputBuffer.getCharPointer(), mChunkLen);
 			if (inputBuffer.getCharPointer()[mChunkLen] != '\r' || inputBuffer.getCharPointer()[mChunkLen + 1] != '\n')
-				throw 400;// runtime_error("Error: invalid chunk format");
+				throw 400;
 			inputBuffer.updateIndex(inputBuffer.getIndex() + mChunkLen + 2);
 			mChunkLen = parseChunkLen(inputBuffer);
 		} else
@@ -98,7 +96,6 @@ size_t	Body::parseChunkLen(InputBuffer& inputbuff)
 
 int	Body::addLenBody(InputBuffer& inputBuffer)
 {
-	//body + header의 경우 error 던져짐
 	if (inputBuffer.size() - inputBuffer.getIndex() < mContentLen)
 		return 0;
 	mBody.append(inputBuffer.getCharPointer(), mContentLen);

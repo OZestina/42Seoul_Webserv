@@ -15,13 +15,11 @@ RPut::RPut(string mRoot, map<string, string> header_key_val, vector<Server>* ser
 	} else if (mBasics.transfer_encoding == "chunked") {
 		mBody.setChunked(true);
 	} else {
-		// cerr << "content length fail" << endl;
 		throw 400;
 	}
 
 	//file only인 location에 dir 요청으로 들어온 경우
 	if (mLocation.getOnlyFile() && mIsFile ==  false) {
-		// cerr << "/* only file Error" << endl;
 		throw 400;
 	}
 
@@ -98,10 +96,8 @@ const string	RPut::createResponse()
 		mMSG.append(SpiderMenUtil::itostr(mPipeValue.size() - (mPipeValue.find("\r\n\r\n") + 4)).c_str());
 		mMSG.append("\r\n");
 		mMSG.append(mPipeValue);
-	} else
-	{
+	} else {
 		mMSG.append("0\r\n\r\n");
-		// cerr << "mPipeValue cannot found CRLF" << endl;
 	}
 
 	return mMSG;
@@ -114,7 +110,6 @@ void	RPut::executeCgi()
 	extern char** environ;
 	char* const argv[2] = {const_cast<char * const>(mCgiPath.c_str()), NULL};
 	setCgiEnv();
-	if (execve(argv[0], argv, environ) == -1)
-		cerr << "RPUT: excute falied error\n";
+	execve(argv[0], argv, environ);
 	exit(EXIT_FAILURE);
 }
